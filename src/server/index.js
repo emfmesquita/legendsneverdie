@@ -4,19 +4,22 @@ require('dotenv').config();
 const DataDragonHelper = require('leaguejs/lib/DataDragon/DataDragonHelper');
 const LeagueJs = require('leaguejs');
 const MatchBuilder = require('./MatchBuilder.js');
-
-const staticPromises = [
-    DataDragonHelper.gettingLatestVersion(),
-    DataDragonHelper.gettingItemList(),
-    DataDragonHelper.gettingChampionsList(),
-    DataDragonHelper.gettingSummonerSpellsList(),
-    DataDragonHelper.gettingReforgedRunesList(),
-];
-
 const PORT = process.env.PORT || 8080;
+let version = null;
 
-Promise.all(staticPromises).then(staticData => {
-    const [version, items, champions, spells, runes] = staticData;
+DataDragonHelper.gettingLatestVersion().then(latestVersion => {
+    version = latestVersion;
+
+    return DataDragonHelper.downloadingStaticDataByVersion({ version });
+}).then(() => {
+    return Promise.all([
+        DataDragonHelper.gettingItemList(),
+        DataDragonHelper.gettingChampionsList(),
+        DataDragonHelper.gettingSummonerSpellsList(),
+        DataDragonHelper.gettingReforgedRunesList(),
+    ]);
+}).then(staticData => {
+    const [items, champions, spells, runes] = staticData;
     const leagueJs = new LeagueJs(process.env.LEAGUE_API_KEY);
     const matchBuilder = new MatchBuilder(leagueJs, version, items, champions, spells, runes);
     
