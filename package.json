@@ -23,6 +23,7 @@
     "leaguejs": "^1.10.1",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
+    "react-loading": "^2.0.3",
     "reactstrap": "^6.4.0"
   },
   "devDependencies": {

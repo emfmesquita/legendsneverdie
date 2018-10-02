@@ -65,3 +65,11 @@ body {
 .lnd-label{
   font-weight: bold;
 }
+
+.lnd-error{
+  color: #f73e31;
+}
+
+.lnd-loading{
+  margin: 12px;
+}

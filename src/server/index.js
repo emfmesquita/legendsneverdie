@@ -21,29 +21,37 @@ Promise.all(staticPromises).then(staticData => {
     const app = express();
     
     app.use(express.static('dist'));
-    app.get('/api/getApiKey', (req, res) => res.send({ key: process.env.LEAGUE_API_KEY }));
     app.get('/api/getSummonerMatches', (req, res) => {
-        const summonerName = 'Voyboy'.trim();
+        const summonerName = req.query.summoner;
+        let summonerId = null;
         const page = '1';
         leagueJs.Summoner
             .gettingByName(summonerName)
             .then(summonerData =>  {
+                summonerId = summonerData.id;
                 return leagueJs.Match.gettingListByAccount(summonerData.accountId);
             })
             .then(matchList => {
-                const promises = [0,1,2,3,4].map(index => {
-                    const matchIndex = (page - 1) * 5 + index;
+                const matchesToFetch = matchList.totalGames < 10 ? matchList.totalGames : 10;
+                const matchPromises = [];
+                for(let i = 0; i < matchesToFetch; i++){
+                    const matchIndex = (page - 1) * 10 + i;
                     const game1Id = matchList.matches[matchIndex].gameId;
-                    return matchBuilder.buildMatch(game1Id, summonerName);
-                });
-                return Promise.all(promises);
+                    matchPromises[i] = matchBuilder.buildMatch(game1Id, summonerId);
+                }
+                return Promise.all(matchPromises);
             })
             .then(matches => {
-                res.send(matches);
+                res.send({ matches });
             })
             .catch(err => {
-                'use strict';
-                console.log(err);
+                let msg = err.message;
+                if(err.statusCode === 404){
+                    msg = "Summoner not found."
+                }
+                res.send({ err: {
+                    message: msg
+                }});
             });
     });
     app.listen(8080, () => console.log('Listening on port 8080!'));

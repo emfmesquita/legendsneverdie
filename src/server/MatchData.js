@@ -13,7 +13,6 @@ module.exports = class Match {
 
         this.victory = false;
         this.gameLength = 0;
-        this.summonnerName = "";
 
         this.champion = new Entity(0);
         this.championId = 0;
