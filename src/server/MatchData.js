@@ -9,6 +9,7 @@ class Entity {
 module.exports = class Match {
     constructor(gameId){
         this.gameId = gameId;
+        this.version = "";
 
         this.victory = false;
         this.gameLength = 0;

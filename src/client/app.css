@@ -1,8 +1,67 @@
 h1 {
-  color: green;
+  color: #2caaff;
 }
 
 body {
   text-align: center;
   margin: auto;
+  margin-top: 20px;
+}
+
+.lnd-match {
+  padding: 12px;
+  margin: 12px;
+  border-style: solid;
+}
+
+.lnd-win {
+  background-color: #9bc3de;
+  border-color: #2caaff;
+}
+
+.lnd-lose {
+  background-color: #ffc5c1;
+  border-color: #f73e31;
+}
+
+.lnd-champion img {
+  border-radius: 10px;
+}
+
+.lnd-spell{
+  display: inline-block;
+  margin: 4px;
+  height: 32px;
+  width: 32px;
+}
+
+.lnd-spell img{
+  height: 32px;
+  width: 32px;
+  border-radius: 10px;
+}
+
+.lnd-item{
+  vertical-align: top;
+  display: inline-block;
+  background-color: gray;
+  margin: 4px;
+  height: 32px;
+  width: 32px;
+  border-radius: 10px;
+}
+
+.lnd-item img{
+  height: 32px;
+  width: 32px;
+  border-radius: 10px;
+}
+
+.lnd-rune img{
+  height: 32px;
+  width: 32px;
+}
+
+.lnd-label{
+  font-weight: bold;
 }

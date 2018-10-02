@@ -1,4 +1,4 @@
-const Match = require('./Match.js');
+const MatchData = require('./MatchData.js');
 
 const getParticipantId = function (matchData, summonerName) {
     const identity = matchData.participantIdentities.find(identity => {
@@ -36,8 +36,9 @@ const processSecondaryRune = function(matchRune, secondaryStyle){
 }
 
 module.exports = class MatchBuilder {
-    constructor(leagueJs, items, champions, spells, runes){
+    constructor(leagueJs, version, items, champions, spells, runes){
         this.leagueJs = leagueJs;
+        this.version = version;
         this.items = items;
         this.champions = champions;
         this.spells = spells;
@@ -45,13 +46,15 @@ module.exports = class MatchBuilder {
     }
 
     buildMatch(gameId, summonerName) {
-        const match = new Match(gameId);
+        const match = new MatchData(gameId);
         let matchData = null;
         return this.leagueJs.Match.gettingById(gameId).then(data => {
             matchData = data;
             const participantId = getParticipantId(matchData, summonerName);
             const participant = getParticipant(matchData, participantId);
             const stats = participant.stats;
+
+            match.version = this.version;
 
             match.victory = stats.win;
             match.gameLength = matchData.gameDuration;

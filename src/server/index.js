@@ -6,6 +6,7 @@ const LeagueJs = require('leaguejs');
 const MatchBuilder = require('./MatchBuilder.js');
 
 const staticPromises = [
+    DataDragonHelper.gettingLatestVersion(),
     DataDragonHelper.gettingItemList(),
     DataDragonHelper.gettingChampionsList(),
     DataDragonHelper.gettingSummonerSpellsList(),
@@ -13,9 +14,9 @@ const staticPromises = [
 ];
 
 Promise.all(staticPromises).then(staticData => {
-    const [items, champions, spells, runes] = staticData;
+    const [version, items, champions, spells, runes] = staticData;
     const leagueJs = new LeagueJs(process.env.LEAGUE_API_KEY);
-    const matchBuilder = new MatchBuilder(leagueJs, items, champions, spells, runes);
+    const matchBuilder = new MatchBuilder(leagueJs, version, items, champions, spells, runes);
     
     const app = express();
     

@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import './app.css';
+import Match from './Match';
+import { Container, Row, Col } from 'reactstrap';
 
 export default class App extends Component {
   state = { matches: null };
@@ -11,7 +13,11 @@ export default class App extends Component {
   }
 
   renderMatch(match) {
-    return <div key={match.gameId}>{match.gameId} - {match.victory? "win": "lose"}</div>
+    return (
+      <Row key={match.gameId}>
+        <Col><Match data={match} /></Col>
+      </Row>
+    );
   }
 
   render() {
@@ -19,7 +25,9 @@ export default class App extends Component {
     return (
       <div>
         <h1>Legends never die!!!!</h1>
-        {matches ? matches.map(this.renderMatch) : ""}
+        <Container>
+          {matches ? matches.map(this.renderMatch) : ""}
+        </Container>
       </div>
     );
   }
