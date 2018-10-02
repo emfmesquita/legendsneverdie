@@ -31,6 +31,11 @@ export default class App extends Component {
     return this.state.summoner ? this.state.summoner.trim() : "";
   }
 
+  inputKeyDown = (evt) => {
+    if(evt.keyCode !== 13) return;
+    this.send();
+  }
+
   renderMatch(match) {
     return (
       <Row key={match.gameId}>
@@ -85,7 +90,7 @@ export default class App extends Component {
             <Col>
               <InputGroup>
                 <InputGroupAddon addonType="prepend">Summoner</InputGroupAddon>
-                <Input value={this.state.summoner} onChange={evt => this.setSummoner(evt)} maxLength="16" />
+                <Input value={this.state.summoner} onKeyDown={this.inputKeyDown} onChange={this.setSummoner} maxLength="16" />
                 <InputGroupAddon addonType="append">
                   <Button onClick={this.send}>Send</Button>
                 </InputGroupAddon>
