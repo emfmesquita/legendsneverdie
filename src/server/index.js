@@ -41,8 +41,9 @@ DataDragonHelper.gettingLatestVersion().then(latestVersion => {
                 const matchPromises = [];
                 for(let i = 0; i < matchesToFetch; i++){
                     const matchIndex = (page - 1) * 10 + i;
+                    const match = matchList.matches[matchIndex];
                     const game1Id = matchList.matches[matchIndex].gameId;
-                    matchPromises[i] = matchBuilder.buildMatch(game1Id, summonerId);
+                    matchPromises[i] = match.season < 11 ? matchBuilder.oldSeasonMatch(game1Id) : matchBuilder.buildMatch(game1Id, summonerId);
                 }
                 return Promise.all(matchPromises);
             })
@@ -53,6 +54,8 @@ DataDragonHelper.gettingLatestVersion().then(latestVersion => {
                 let msg = err.message;
                 if(err.statusCode === 404){
                     msg = "Summoner not found."
+                } else if(err.statusCode === 403){
+                    msg = "API key expired."
                 }
                 res.send({ err: {
                     message: msg

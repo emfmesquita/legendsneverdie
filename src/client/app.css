@@ -24,6 +24,11 @@ body {
   border-color: #f73e31;
 }
 
+.lnd-old {
+  background-color: #ccc;
+  border-color: #484848;
+}
+
 .lnd-champion img {
   border-radius: 10px;
 }

@@ -32,6 +32,8 @@ const csPerMinute = (data) => {
 export default class Match extends Component {
     render() {
         const data = this.props.data;
+        if(data.old) return <div className="lnd-match lnd-old"><h2>Old Season Match</h2></div>
+
         return (
             <div className={"lnd-match " + (data.victory ? "lnd-win" : "lnd-lose")}>
                 <h2>{data.victory? "Victory!": "Defeat"}</h2>

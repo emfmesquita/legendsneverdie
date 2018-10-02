@@ -12,31 +12,31 @@ const getParticipant = function (matchData, participantId) {
     return matchData.participants.find(participant => participant.participantId === participantId);
 }
 
-const getRune = function(matchRune, runes) {
+const getRune = function (matchRune, runes) {
     return runes.find(rune => rune.id === matchRune.id);
 }
 
-const setRuneData = function(matchRune, rune){
+const setRuneData = function (matchRune, rune) {
     matchRune.name = rune.name;
     matchRune.image = rune.icon;
     return rune;
 }
 
-const processRune = function(matchRune, runes) {
+const processRune = function (matchRune, runes) {
     return setRuneData(matchRune, getRune(matchRune, runes));
 }
 
-const processSecondaryRune = function(matchRune, secondaryStyle){
+const processSecondaryRune = function (matchRune, secondaryStyle) {
     let rune = getRune(matchRune, secondaryStyle.slots[1].runes);
-    if(rune) return setRuneData(matchRune, rune);
-    rune =  getRune(matchRune, secondaryStyle.slots[2].runes);
-    if(rune) return setRuneData(matchRune, rune);
-    rune =  getRune(matchRune, secondaryStyle.slots[3].runes);
-    if(rune) return setRuneData(matchRune, rune);
+    if (rune) return setRuneData(matchRune, rune);
+    rune = getRune(matchRune, secondaryStyle.slots[2].runes);
+    if (rune) return setRuneData(matchRune, rune);
+    rune = getRune(matchRune, secondaryStyle.slots[3].runes);
+    if (rune) return setRuneData(matchRune, rune);
 }
 
 module.exports = class MatchBuilder {
-    constructor(leagueJs, version, items, champions, spells, runes){
+    constructor(leagueJs, version, items, champions, spells, runes) {
         this.leagueJs = leagueJs;
         this.version = version;
         this.items = items;
@@ -86,7 +86,7 @@ module.exports = class MatchBuilder {
             // items
             for (let i = 0; i <= 6; i++) {
                 const id = stats["item" + i];
-                if(!id) continue;
+                if (!id) continue;
                 const item = this.items.data[id];
                 const matchItem = match.items[i];
                 matchItem.id = id;
@@ -94,14 +94,16 @@ module.exports = class MatchBuilder {
                 matchItem.image = item.image.full;
             }
 
+
             // primary path runes
             match.runes.primary.style.id = stats.perkPrimaryStyle;
+            const primaryStyle = processRune(match.runes.primary.style, this.runes);
+
             match.runes.primary.keystone.id = stats.perk0;
             match.runes.primary.runes[0].id = stats.perk1;
             match.runes.primary.runes[1].id = stats.perk2;
             match.runes.primary.runes[2].id = stats.perk3;
 
-            const primaryStyle = processRune(match.runes.primary.style, this.runes);
             processRune(match.runes.primary.keystone, primaryStyle.slots[0].runes);
             processRune(match.runes.primary.runes[0], primaryStyle.slots[1].runes);
             processRune(match.runes.primary.runes[1], primaryStyle.slots[2].runes);
@@ -119,5 +121,11 @@ module.exports = class MatchBuilder {
 
             return match;
         });
+    }
+
+    oldSeasonMatch(gameId) {
+        const match = new MatchData(gameId);
+        match.old = true;
+        return Promise.resolve(match);
     }
 }
