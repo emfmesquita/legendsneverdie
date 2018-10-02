@@ -53,5 +53,8 @@
   "bugs": {
     "url": "https://github.com/emfmesquita/legendsneverdie/issues"
   },
-  "homepage": "https://github.com/emfmesquita/legendsneverdie#readme"
+  "homepage": "https://github.com/emfmesquita/legendsneverdie#readme",
+  "engines": {
+    "node": "v8.12.0"
+  }
 }
