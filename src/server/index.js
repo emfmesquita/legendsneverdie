@@ -13,6 +13,8 @@ const staticPromises = [
     DataDragonHelper.gettingReforgedRunesList(),
 ];
 
+const PORT = process.env.PORT || 8080;
+
 Promise.all(staticPromises).then(staticData => {
     const [version, items, champions, spells, runes] = staticData;
     const leagueJs = new LeagueJs(process.env.LEAGUE_API_KEY);
@@ -54,5 +56,5 @@ Promise.all(staticPromises).then(staticData => {
                 }});
             });
     });
-    app.listen(8080, () => console.log('Listening on port 8080!'));
+    app.listen(PORT, () => console.log(`Listening on port ${PORT}!`));
 });
